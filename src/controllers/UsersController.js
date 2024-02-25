@@ -1,17 +1,13 @@
 //require bcryptjs
-//require apperror
-//require sqliteConnection
+const AppError = require("../utils/AppError");
+const sqliteConnection = require("../database/sqlite");
 
 class UsersController {
 
     async create(request, response) {
         const { name, email, password } = request.body;
 
-        response.send(`
-            User: ${name}.
-            Email: ${email}.
-            Password: ${password}.
-        `);
+        const database = await sqliteConnection();
 
         return response.status(201).json();
     }
