@@ -1,0 +1,26 @@
+{
+  "name": "movies_notes",
+  "version": "1.0.0",
+  "description": "API developed for the movies-notes project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "dev": "nodemon ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viniccius-dev/movies-notes.git"
+  },
+  "author": "Marcos Vinícius",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/viniccius-dev/movies-notes/issues"
+  },
+  "homepage": "https://github.com/viniccius-dev/movies-notes#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
