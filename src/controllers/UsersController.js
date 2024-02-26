@@ -24,6 +24,50 @@ class UsersController {
         return response.status(201).json();
     }
 
+    async update(request, response) {
+        const { name, email, password, old_password } = request.body;
+        const { id } = request.params;
+
+        const database = await sqliteConnection();
+        const user = await database.get("SELECT * FROM users WHERE id = (?)", [id]);
+
+        if(!user) {
+            throw new AppError("Usuário não encontrado.");
+        }
+
+        const userWhithUpdateEmail = await database.get("SELECT * FROM users WHERE email = (?)", [email]);
+
+        if(userWhithUpdateEmail && userWhithUpdateEmail.id !== user.id) {
+            throw new AppError("Esse e-mail já está em uso.");
+        }
+
+        user.name = name ?? user.name;
+        user.email = email ?? user.email;
+
+        if(password && old_password) {
+            //Comparar se a senha antiga informada é a mesma que está no banco de dados
+            const checkOldPassword = await compare(old_password, user.password);
+
+            if(!checkOldPassword) {
+                throw new AppError("A senha antiga informada está incorreta");
+            }
+
+            user.password = await hash(password, 8);
+        }
+
+        await database.run(`
+            UPDATE users SET
+            name = ?,
+            email = ?,
+            password = ?,
+            update_at = DATETIME('now')
+            WHERE id = ?`,
+            [user.name, user.email, user.password, id]
+        );
+
+        return response.status(200).json();
+    }
+
 }
 
 module.exports = UsersController;
