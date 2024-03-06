@@ -6,7 +6,14 @@ class MovieNotesController {
         const { title, description, rating } = request.body;
         const { user_id } = request.params;
 
-        
+        await knex("movie_notes").insert({
+            title,
+            description,
+            rating,
+            user_id
+        });
+
+        response.json();
     }
 
 }
