@@ -6,6 +6,8 @@ class MovieTagsController {
         const { tags } = request.body;
         const { user_id } = request.params;
         const { note_id } = request.query;
+        
+        //Revisar para tratativa de erro caso não encontre o note_id
 
         const tagsInsert = tags.map(name => {
             return {
